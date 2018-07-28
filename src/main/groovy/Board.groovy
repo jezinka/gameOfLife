@@ -10,7 +10,7 @@ class Board {
         this.x = x
         this.y = y
 
-        this.board = [[new Cell(state: State.DEAD)] * y] * x
+        this.board = [[new Cell(State.DEAD)] * y] * x
         randomInit()
     }
 
@@ -20,7 +20,7 @@ class Board {
             int randomX = RandomUtils.nextInt(0, this.x)
             int randomY = RandomUtils.nextInt(0, this.y)
 
-            this.board[randomX][randomY] = new Cell(state: State.ALIVE)
+            this.board[randomX][randomY] = new Cell(State.ALIVE)
         }
     }
 
@@ -30,7 +30,7 @@ class Board {
             for (int y = 0; y < subArray.length; y++) {
                 Cell cell = subArray[y]
                 Event event = getEvent(x, y)
-                cell.state = StateMachineDefinition.transition(event, cell.state)
+                StateMachineDefinition.transition(event, cell)
             }
         }
     }
@@ -69,6 +69,6 @@ class Board {
 
     @Override
     String toString() {
-        board.collect { row -> row*.state.join(' ') }.join('\n') + '\n\n'
+        board.collect { row -> row.join(' ') }.join('\n') + '\n\n'
     }
 }

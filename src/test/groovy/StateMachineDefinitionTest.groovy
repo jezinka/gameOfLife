@@ -12,22 +12,22 @@ class StateMachineDefinitionTest extends Specification {
     def "Transition no exception"() {
 
         when:
-        State result = StateMachineDefinition.transition(event, state)
+        StateMachineDefinition.transition(event, cell)
 
         then:
         noExceptionThrown()
-        assert result == expectedState
+        assert cell.state == expectedState
 
         where:
-        state       | event      || expectedState
-        State.ALIVE | 'to_dead'  || State.DEAD
-        State.ALIVE | 'to_alive' || State.ALIVE
-        State.DEAD  | 'to_alive' || State.ALIVE
+        cell                  | event      || expectedState
+        new Cell(State.ALIVE) | 'to_dead'  || State.DEAD
+        new Cell(State.ALIVE) | 'to_alive' || State.ALIVE
+        new Cell(State.DEAD)  | 'to_alive' || State.ALIVE
     }
 
     def "Transition should throw exception"() {
         when:
-        StateMachineDefinition.transition('to_another_state', State.ALIVE)
+        StateMachineDefinition.transition('to_another_state', new Cell(State.ALIVE))
 
         then:
         thrown(Exception)

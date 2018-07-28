@@ -4,21 +4,32 @@ class StateMachineDefinition {
             (State.ALIVE): [
                     [event: Event.OVER_POPULATION, to: State.DEAD],
                     [event: Event.UNDER_POPULATION, to: State.DEAD],
-                    [event: Event.STABLE, to: State.ALIVE],
+                    [event: Event.STABLE, to: State.ALIVE, afterAction: 'increment'],
             ],
             (State.DEAD) : [
-                    [event: Event.REPRODUCTION, to: State.ALIVE],
+                    [event: Event.REPRODUCTION, to: State.ALIVE, afterAction: 'reset'],
                     [event: Event.STABLE, to: State.DEAD]
             ]
     ]
 
-    static State transition(event, State state) {
-        List states = state_machine_definition[state]
+    static void transition(event, Cell cell) {
+        List states = state_machine_definition[cell.state]
         def transition = states.find({ it.event == event })
-        if (transition) {
-            return transition.to
+
+        if (!transition) {
+            throw new Exception("invalid event $event ignored for state ${cell.state}")
         }
-        throw new Exception("invalid event $event ignored for state $state")
+
+        cell.state = transition.to
+
+        switch (transition.afterAction) {
+            case 'increment':
+                cell.lifeLong++
+                break
+            case 'reset':
+                cell.lifeLong = 0
+                break
+        }
     }
 }
 
