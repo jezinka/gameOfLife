@@ -6,6 +6,12 @@ class Board {
     int x
     int y
 
+    Board(Cell[][] board) {
+        this.board = board
+        this.x = board.length
+        this.y = board[0].length
+    }
+
     Board(int x, int y) {
         this.x = x
         this.y = y
@@ -55,10 +61,11 @@ class Board {
 
     private int getLiveNeighbours(int x, int y) {
         int liveNeighbours = 0
-        for (int i = x - 1; i <= x + 1; i++) {
-            if (i > 0 && i < board.length) {
-                for (int j = y - 1; j <= y + 1; j++) {
-                    if (i != x && j > 0 && j < board[i].length && j != y && board[i][j].state == State.ALIVE) {
+
+        for (int i = normalizeStart(x); i <= normalizeEnd(x, this.x); i++) {
+            for (int j = normalizeStart(y); j <= normalizeEnd(y, this.y); j++) {
+                if (board[i][j].state == State.ALIVE) {
+                    if (x != i || y != j) {
                         liveNeighbours++
                     }
                 }
@@ -67,8 +74,17 @@ class Board {
         liveNeighbours
     }
 
+    private int normalizeStart(int i) {
+        i - 1 > 0 ? i - 1 : 0
+    }
+
+    private int normalizeEnd(int i, int max) {
+        i + 1 < max ? i + 1 : max - 1
+    }
+
     @Override
     String toString() {
         board.collect { row -> row.join(' ') }.join('\n') + '\n\n'
     }
+
 }
