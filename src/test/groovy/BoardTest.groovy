@@ -59,6 +59,15 @@ class BoardTest extends Specification {
          [new Cell(State.DEAD), new Cell(State.DEAD), new Cell(State.DEAD)]] as Cell[][] | State.DEAD  || Event.STABLE
     }
 
+    def "randomInit test"() {
+
+        when:
+        Board board = new Board([[new Cell(State.DEAD)] * 3] * 3 as Cell[][])
+        board.randomInit()
+
+        then:
+        board.board.any { it.any { it.state == State.ALIVE } }
+    }
 }
 
 
