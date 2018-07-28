@@ -6,6 +6,8 @@ class Board {
     int x
     int y
 
+    Board() {}
+
     Board(Cell[][] board) {
         this.board = board
         this.x = board.length
@@ -35,17 +37,16 @@ class Board {
             Cell[] subArray = this.board[x]
             for (int y = 0; y < subArray.length; y++) {
                 Cell cell = subArray[y]
-                Event event = getEvent(x, y)
+                Event event = getEvent(x, y, cell.state)
                 StateMachineDefinition.transition(event, cell)
             }
         }
     }
 
-    private Event getEvent(int x, int y) {
-        Cell cell = board[x][y]
+    private Event getEvent(int x, int y, State state) {
         int aliveNeighbours = getLiveNeighbours(x, y)
 
-        if (cell.state == State.ALIVE) {
+        if (state == State.ALIVE) {
             if (aliveNeighbours < 2) {
                 return Event.UNDER_POPULATION
             } else if (aliveNeighbours > 3) {
