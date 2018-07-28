@@ -12,14 +12,13 @@ class StateMachineDefinition {
             ]
     ]
 
-    static void transition(event, Cell cell) {
-        List state = state_machine_definition[cell.state]
-        def transition = state.find({ it.event == event })
+    static State transition(event, State state) {
+        List states = state_machine_definition[state]
+        def transition = states.find({ it.event == event })
         if (transition) {
-            cell.state = transition.to
-        } else {
-            print("invalid event $event ignored for state $cell.state on subject $cell")
+            return transition.to
         }
+        throw new Exception("invalid event $event ignored for state $state")
     }
 }
 

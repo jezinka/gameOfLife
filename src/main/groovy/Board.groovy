@@ -30,7 +30,7 @@ class Board {
             for (int y = 0; y < subArray.length; y++) {
                 Cell cell = subArray[y]
                 Event event = getEvent(x, y)
-                StateMachineDefinition.transition(event, cell)
+                cell.state = StateMachineDefinition.transition(event, cell.state)
             }
         }
     }
