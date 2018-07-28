@@ -24,7 +24,7 @@ class Board {
 
     private void randomInit() {
 
-        ((this.x * this.y) / 2).times {
+        ((this.x * this.y) / 0.75).times {
             int randomX = RandomUtils.nextInt(0, this.x)
             int randomY = RandomUtils.nextInt(0, this.y)
 

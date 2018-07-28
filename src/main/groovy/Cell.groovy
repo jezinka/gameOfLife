@@ -7,6 +7,23 @@ class Cell {
         this.lifeLong = 0
     }
 
+    int[] getCellColor() {
+        int[] color
+        if (this.state == State.ALIVE) {
+            if (this.lifeLong == 0) {
+                return [255, 0, 0]
+            } else if (this.lifeLong == 1) {
+                color = [0, 0, 255]
+            } else {
+                color = [255, 255, 0]
+            }
+        } else {
+            color = [255, 255, 255]
+        }
+
+        return color
+    }
+
     @Override
     String toString() {
         String color
