@@ -5,7 +5,6 @@ class Board {
     private static final int NOT_ENOUGH = 2
     private static final int TOO_MANY = 3
     private static final int REPRODUCTORS = 3
-    private static final BigDecimal DENSITY = 20
 
     Cell[][] board
     int x
@@ -17,9 +16,9 @@ class Board {
         this.y = board[0].length
     }
 
-    Board(int x, int y) {
-        this.x = x
-        this.y = y
+    Board(int size) {
+        this.x = size
+        this.y = size
 
         this.board = [[new Cell(State.DEAD)] * y] * x
         randomInit()
@@ -27,7 +26,7 @@ class Board {
 
     private void randomInit() {
 
-        ((this.x * this.y) / DENSITY).times {
+        (Math.floor(this.x * this.y * 0.05)).times {
             int randomX = RandomUtils.nextInt(0, this.x)
             int randomY = RandomUtils.nextInt(0, this.y)
 

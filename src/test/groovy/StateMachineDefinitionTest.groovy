@@ -12,11 +12,11 @@ class StateMachineDefinitionTest extends Specification {
     def "Transition no exception"() {
 
         when:
-        StateMachineDefinition.transition(event, cell)
+        Cell newCell = StateMachineDefinition.transition(event, cell)
 
         then:
         noExceptionThrown()
-        assert cell.state == expectedState
+        assert newCell.state == expectedState
 
         where:
         cell                  | event      || expectedState

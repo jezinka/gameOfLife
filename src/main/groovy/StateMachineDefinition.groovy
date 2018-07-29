@@ -19,7 +19,14 @@ class StateMachineDefinition {
         if (!transition) {
             throw new Exception("invalid event $event for state ${cell.state}")
         }
-        return new Cell(transition.to, transition.afterAction == 'increment' ? ++cell.lifeLong : 0)
+
+        Cell tempCell = new Cell(transition.to, cell.lifeLong)
+
+        if (transition.afterAction) {
+            tempCell."${transition.afterAction}"()
+        }
+
+        return tempCell
     }
 }
 

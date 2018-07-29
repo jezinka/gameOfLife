@@ -33,8 +33,8 @@ class Main extends PApplet {
     static void main(String[] args) {
         String[] processingArgs = { "Game Of Life" }
         Main main = new Main()
-        board = new Board(BOARD_SIZE, BOARD_SIZE)
-        PApplet.runSketch(processingArgs, main)
+        board = new Board(BOARD_SIZE)
+        runSketch(processingArgs, main)
     }
 }
 
