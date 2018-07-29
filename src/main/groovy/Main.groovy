@@ -13,7 +13,7 @@ class Main extends PApplet {
         for (int x = 0; x < width; x++) {
             for (int y = 0; y < height; y++) {
                 int loc = x + y * width
-                pixels[loc] = color(*board.board[x][y].getCellColor())
+                pixels[loc] = color(*board.getCellColor(x, y))
             }
         }
         updatePixels()
@@ -22,7 +22,6 @@ class Main extends PApplet {
 
 
     static void main(String[] args) {
-
         String[] processingArgs = { "Game Of Life" }
         Main main = new Main()
         board = new Board(500, 500)

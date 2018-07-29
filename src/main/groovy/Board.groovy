@@ -2,6 +2,11 @@ import org.apache.commons.lang3.RandomUtils
 
 class Board {
 
+    private static final int NOT_ENOUGH = 2
+    private static final int TOO_MANY = 3
+    private static final int REPRODUCTORS = 3
+    private static final BigDecimal DENSITY = 0.75
+
     Cell[][] board
     int x
     int y
@@ -24,7 +29,7 @@ class Board {
 
     private void randomInit() {
 
-        ((this.x * this.y) / 0.75).times {
+        ((this.x * this.y) / DENSITY).times {
             int randomX = RandomUtils.nextInt(0, this.x)
             int randomY = RandomUtils.nextInt(0, this.y)
 
@@ -34,9 +39,8 @@ class Board {
 
     void step() {
         for (int x = 0; x < board.length; x++) {
-            Cell[] subArray = this.board[x]
-            for (int y = 0; y < subArray.length; y++) {
-                Cell cell = subArray[y]
+            for (int y = 0; y < this.board[x].length; y++) {
+                Cell cell = board[x][y]
                 Event event = getEvent(x, y, cell.state)
                 StateMachineDefinition.transition(event, cell)
             }
@@ -47,13 +51,14 @@ class Board {
         int aliveNeighbours = getLiveNeighbours(x, y)
 
         if (state == State.ALIVE) {
-            if (aliveNeighbours < 2) {
+            if (aliveNeighbours < NOT_ENOUGH) {
                 return Event.UNDER_POPULATION
-            } else if (aliveNeighbours > 3) {
+            }
+            if (aliveNeighbours > TOO_MANY) {
                 return Event.OVER_POPULATION
             }
         } else {
-            if (aliveNeighbours == 3) {
+            if (aliveNeighbours == REPRODUCTORS) {
                 return Event.REPRODUCTION
             }
         }
@@ -65,10 +70,8 @@ class Board {
 
         for (int i = normalizeStart(x); i <= normalizeEnd(x, this.x); i++) {
             for (int j = normalizeStart(y); j <= normalizeEnd(y, this.y); j++) {
-                if (board[i][j].state == State.ALIVE) {
-                    if (x != i || y != j) {
-                        liveNeighbours++
-                    }
+                if ((x != i || y != j) && board[i][j].state == State.ALIVE) {
+                    liveNeighbours++
                 }
             }
         }
@@ -83,9 +86,12 @@ class Board {
         i + 1 < max ? i + 1 : max - 1
     }
 
+    int[] getCellColor(int x, int y) {
+        board[x][y].getCellColor()
+    }
+
     @Override
     String toString() {
         board.collect { row -> row.join(' ') }.join('\n') + '\n\n'
     }
-
 }
