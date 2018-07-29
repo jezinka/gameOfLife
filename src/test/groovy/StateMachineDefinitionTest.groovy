@@ -4,7 +4,7 @@ class StateMachineDefinitionTest extends Specification {
 
     def setup() {
         StateMachineDefinition.state_machine_definition = [
-                (State.ALIVE): [[event: 'to_dead', to: State.DEAD], [event: 'to_alive', to: State.ALIVE]],
+                (State.ALIVE): [[event: 'to_dead', to: State.DEAD], [event: 'stable', to: State.ALIVE]],
                 (State.DEAD) : [[event: 'to_alive', to: State.ALIVE]]
         ]
     }
@@ -21,7 +21,7 @@ class StateMachineDefinitionTest extends Specification {
         where:
         cell                  | event      || expectedState
         new Cell(State.ALIVE) | 'to_dead'  || State.DEAD
-        new Cell(State.ALIVE) | 'to_alive' || State.ALIVE
+        new Cell(State.ALIVE) | 'stable'   || State.ALIVE
         new Cell(State.DEAD)  | 'to_alive' || State.ALIVE
     }
 

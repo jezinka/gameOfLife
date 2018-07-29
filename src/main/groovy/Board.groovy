@@ -5,13 +5,11 @@ class Board {
     private static final int NOT_ENOUGH = 2
     private static final int TOO_MANY = 3
     private static final int REPRODUCTORS = 3
-    private static final BigDecimal DENSITY = 0.75
+    private static final BigDecimal DENSITY = 20
 
     Cell[][] board
     int x
     int y
-
-    Board() {}
 
     Board(Cell[][] board) {
         this.board = board
@@ -38,13 +36,16 @@ class Board {
     }
 
     void step() {
-        for (int x = 0; x < board.length; x++) {
-            for (int y = 0; y < this.board[x].length; y++) {
+        Board tmpBoard = new Board(this.board)
+
+        for (int x = 0; x < this.x; x++) {
+            for (int y = 0; y < this.y; y++) {
                 Cell cell = board[x][y]
                 Event event = getEvent(x, y, cell.state)
-                StateMachineDefinition.transition(event, cell)
+                tmpBoard.board[x][y] = StateMachineDefinition.transition(event, cell)
             }
         }
+        this.board = tmpBoard.board
     }
 
     private Event getEvent(int x, int y, State state) {
@@ -66,16 +67,15 @@ class Board {
     }
 
     private int getLiveNeighbours(int x, int y) {
-        int liveNeighbours = 0
+        int liveNeighbours = board[(normalizeStart(x)..normalizeEnd(x, this.x))]
+                .collect { it[(normalizeStart(y)..normalizeEnd(y, this.y))] }
+                .flatten()
+                .count { Cell cell -> cell.state == State.ALIVE } as int
 
-        for (int i = normalizeStart(x); i <= normalizeEnd(x, this.x); i++) {
-            for (int j = normalizeStart(y); j <= normalizeEnd(y, this.y); j++) {
-                if ((x != i || y != j) && board[i][j].state == State.ALIVE) {
-                    liveNeighbours++
-                }
-            }
+        if (board[x][y].state == State.ALIVE) {
+            return --liveNeighbours
         }
-        liveNeighbours
+        return liveNeighbours
     }
 
     private int normalizeStart(int i) {

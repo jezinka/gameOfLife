@@ -20,11 +20,11 @@ class BoardTest extends Specification {
         [[new Cell(State.ALIVE)] * 3] * 3 as Cell[][]                                      || 8
 
         [[new Cell(State.ALIVE), new Cell(State.DEAD), new Cell(State.ALIVE)],
-         [new Cell(State.DEAD), new Cell(State.DEAD), new Cell(State.DEAD)],
+         [new Cell(State.DEAD), new Cell(State.ALIVE), new Cell(State.DEAD)],
          [new Cell(State.ALIVE), new Cell(State.DEAD), new Cell(State.ALIVE)]] as Cell[][] || 4
 
         [[new Cell(State.DEAD), new Cell(State.ALIVE), new Cell(State.DEAD)],
-         [new Cell(State.ALIVE), new Cell(State.DEAD), new Cell(State.ALIVE)],
+         [new Cell(State.ALIVE), new Cell(State.ALIVE), new Cell(State.ALIVE)],
          [new Cell(State.DEAD), new Cell(State.ALIVE), new Cell(State.DEAD)]] as Cell[][]  || 4
 
         [[new Cell(State.DEAD)] * 3] * 3 as Cell[][]                                       || 0
@@ -49,6 +49,10 @@ class BoardTest extends Specification {
 
         [[new Cell(State.DEAD), new Cell(State.DEAD), new Cell(State.DEAD)],
          [new Cell(State.DEAD), new Cell(State.ALIVE), new Cell(State.DEAD)],
+         [new Cell(State.DEAD), new Cell(State.DEAD), new Cell(State.DEAD)]] as Cell[][] | State.ALIVE || Event.UNDER_POPULATION
+
+        [[new Cell(State.DEAD), new Cell(State.DEAD), new Cell(State.DEAD)],
+         [new Cell(State.ALIVE), new Cell(State.ALIVE), new Cell(State.DEAD)],
          [new Cell(State.DEAD), new Cell(State.DEAD), new Cell(State.DEAD)]] as Cell[][] | State.ALIVE || Event.UNDER_POPULATION
 
         [[new Cell(State.DEAD), new Cell(State.ALIVE), new Cell(State.DEAD)],

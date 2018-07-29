@@ -8,6 +8,11 @@ class Cell {
         this.lifeLong = 0
     }
 
+    Cell(State state, int lifeLong) {
+        this.state = state
+        this.lifeLong = lifeLong
+    }
+
     void increment() {
         this.lifeLong++
     }
