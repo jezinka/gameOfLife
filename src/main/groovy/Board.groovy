@@ -24,6 +24,14 @@ class Board {
         randomInit()
     }
 
+    Board(int width, int length) {
+        this.x = width
+        this.y = length
+
+        this.board = [[new Cell(State.DEAD)] * y] * x
+        randomInit()
+    }
+
     private void randomInit() {
 
         (Math.floor(this.x * this.y * 0.05)).times {
